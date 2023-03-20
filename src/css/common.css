@@ -41,3 +41,8 @@ img {
   justify-content: center;
   align-items: center;
 }
+
+#start-btn:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

@@ -29,11 +29,16 @@ function startCountdown(chosenDate, refs) {
   let remainingTime = chosenDate - new Date();
   if (remainingTime <= 0) return;
 
+  refs.inputEl.disabled = true;
+  refs.startBtn.disabled = true;
+
   let timer = setInterval(() => {
     remainingTime -= 1000;
     if (remainingTime <= 0) {
       clearInterval(timer);
       remainingTime = 0;
+      refs.inputEl.disabled = false;
+      refs.startBtn.disabled = false;
     }
     const { days, hours, minutes, seconds } = convertMs(remainingTime);
 
@@ -51,8 +56,11 @@ function startCountdown(chosenDate, refs) {
     refs.minutes.textContent = '00';
     refs.seconds.textContent = '00';
     refs.inputEl._flatpickr.setDate(new Date());
+    refs.inputEl.disabled = false;
+    refs.startBtn.disabled = false;
   });
 }
+
 
 const options = {
   enableTime: true,
@@ -84,50 +92,3 @@ const refs = {
 };
 
 flatpickr(refs.inputEl, options);
-
-
-
-
-// import flatpickr from 'flatpickr';
-// import Notiflix from 'notiflix';
-
-// const startDatePicker = flatpickr('#start-date', {
-//     enableTime: true,
-//     dateFormat: 'Y-m-d H:i',
-//     minDate: 'today',
-//     minuteIncrement: 1,
-//     onClose: function(selectedDates, dateStr, instance) {
-//         const selectedDate = selectedDates[0];
-
-//         if (selectedDate < new Date()) {
-//             Notiflix.Notify.warning('Please choose a date in the future');
-//             document.querySelector('#start-button').disabled = true;
-//         } else {
-//             Notiflix.Notify.success('Valid date selected');
-//             document.querySelector('#start-button').disabled = false;
-//         }
-//     },
-// });
-
-// document.querySelector('#start-button').addEventListener('click', function() {
-//     const selectedDate = startDatePicker.selectedDates[0];
-//     const countdownTimer = setInterval(function() {
-//         const now = new Date().getTime();
-//         const distance = selectedDate.getTime() - now;
-//         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-//         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-//         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-//         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-//               document.querySelector('[data-days]').textContent = days;
-//       document.querySelector('[data-hours]').textContent = hours;
-//       document.querySelector('[data-minutes]').textContent = minutes;
-//       document.querySelector('[data-seconds]').textContent = seconds;
-
-//         document.querySelector('#countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s `;
-//         if (distance < 0) {
-//             clearInterval(countdownTimer);
-//             document.querySelector('#countdown').innerHTML = 'EXPIRED';
-//         }
-//     }, 1000);
-// });
